@@ -5,7 +5,9 @@ import OperationController from "./OperationController.js";
 export default class CalculatorController {
   constructor(
     private display = new DisplayController(),
-    private operation = new OperationController()
+    private operation = new OperationController({
+      onCalculate: (result: string) => (this.display.content = result),
+    })
   ) {
     new DateAndTimeController();
     this.btnEvents();
@@ -51,10 +53,15 @@ export default class CalculatorController {
             break;
 
           case "igual":
+            this.calculate();
             break;
         }
       });
     });
+  }
+
+  calculate(): void {
+    this.operation.calculate();
   }
 
   addOperation(value: string): void {

@@ -2,7 +2,9 @@ import DateAndTimeController from "./DateAndTimeController.js";
 import DisplayController from "./DisplayController.js";
 import OperationController from "./OperationController.js";
 export default class CalculatorController {
-    constructor(display = new DisplayController(), operation = new OperationController()) {
+    constructor(display = new DisplayController(), operation = new OperationController({
+        onCalculate: (result) => (this.display.content = result),
+    })) {
         this.display = display;
         this.operation = operation;
         new DateAndTimeController();
@@ -41,10 +43,14 @@ export default class CalculatorController {
                     case "porcentagem":
                         break;
                     case "igual":
+                        this.calculate();
                         break;
                 }
             });
         });
+    }
+    calculate() {
+        this.operation.calculate();
     }
     addOperation(value) {
         this.operation.add(value);
