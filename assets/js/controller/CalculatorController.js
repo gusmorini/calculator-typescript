@@ -1,8 +1,10 @@
 import DateAndTimeController from "./DateAndTimeController.js";
 import DisplayController from "./DisplayController.js";
+import OperationController from "./OperationController.js";
 export default class CalculatorController {
-    constructor(display = new DisplayController()) {
+    constructor(display = new DisplayController(), operation = new OperationController()) {
         this.display = display;
+        this.operation = operation;
         new DateAndTimeController();
         this.btnEvents();
     }
@@ -21,16 +23,18 @@ export default class CalculatorController {
                     case "oito":
                     case "nove":
                     case "zero":
-                        this.addNumberDisplay(Number(target.dataset.valor));
+                        this.addNumber(Number(target.dataset.valor));
                         break;
                     case "adicao":
                     case "subtracao":
                     case "multiplicacao":
                     case "divisao":
+                        this.addOperator(target.dataset.valor);
                         break;
                     case "ponto":
                         break;
                     case "limpar":
+                        this.display.content = "0";
                         break;
                     case "desfazer":
                         break;
@@ -42,8 +46,15 @@ export default class CalculatorController {
             });
         });
     }
-    addNumberDisplay(value) {
+    addOperation(value) {
+        this.operation.add(value);
+    }
+    addNumber(value) {
         this.display.content = value.toString();
+        this.addOperation(value.toString());
+    }
+    addOperator(operator) {
+        this.addOperation(operator);
     }
 }
 //# sourceMappingURL=CalculatorController.js.map
