@@ -44,6 +44,7 @@ export default class CalculatorController {
 
           case "limpar":
             this.display.content = "0";
+            this.operation.clean();
             break;
 
           case "desfazer":
@@ -69,8 +70,16 @@ export default class CalculatorController {
   }
 
   addNumber(value: number): void {
+    if (isNaN(Number(this.operation.latestPosition))) {
+      this.addOperation(value.toString());
+    } else {
+      value = Number(
+        this.operation.latestPosition.toString() + value.toString()
+      );
+      this.operation.latestPosition = value.toString();
+    }
+
     this.display.content = value.toString();
-    this.addOperation(value.toString());
   }
 
   addOperator(operator: string): void {

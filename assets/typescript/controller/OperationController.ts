@@ -9,6 +9,10 @@ export default class OperationController {
     this.onCalculate = opt.onCalculate;
   }
 
+  clean(): void {
+    this.operation = [];
+  }
+
   add(value: string): number {
     if (this.operation.length === 3) {
       this.calculate();
@@ -36,6 +40,17 @@ export default class OperationController {
       result = "ERROR";
     }
     return result;
+  }
+
+  get latestPosition(): string {
+    return this.operation.length
+      ? this.operation[this.operation.length - 1]
+      : "0";
+  }
+
+  set latestPosition(value: string) {
+    const index = this.operation.length ? this.operation.length - 1 : 0;
+    this.operation[index] = value;
   }
 
   get length(): number {
